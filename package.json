@@ -21,6 +21,10 @@
     "swagger": "swagger-repo",
     "test": "swagger-repo validate",
     "start": "gulp serve",
-    "deploy-branch": "node ./scripts/deploy-branch.js"
+    "deploy-branch": "node ./scripts/deploy-branch.js",
+    "gh-pages": "gh-pages -d web_deploy"
+  },
+  "devDependencies": {
+    "gh-pages": "^1.0.0"
   }
 }
