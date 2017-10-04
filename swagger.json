@@ -224,10 +224,23 @@
         }
       },
       "example": {
-        "actividadEconomicaPrimaria": "Chofer",
-        "actividadEconomicaSecundaria": "Cocinero",
-        "salarioMensual": 1000000,
-        "selectBathRoomWithOptions": "red",
+        "socio_economic": {
+          "actividadEconomicaPrimaria": "Chofer",
+          "actividadEconomicaSecundaria": "Cocinero",
+          "salarioMensual": 1000000
+        },
+        "life_map": {
+          "selectBathRoomWithOptions": {
+            "red": [
+              "2017/01/1",
+              "2017/01/02"
+            ],
+            "green": [
+              "2017/01/03",
+              "2017/01/04"
+            ]
+          }
+        },
         "family_id": 123,
         "created_at": "12/02/1993 15:22:33.999Z",
         "user_created": 123
@@ -246,10 +259,13 @@
         }
       },
       "example": {
-        "actividadEconomicaPrimaria": "Chofer",
-        "actividadEconomicaSecundaria": "Cocinero",
-        "salarioMensual": 1000000,
-        "selectBathRoomWithOptions": "red"
+        "family_id": 123,
+        "survey_data": {
+          "actividadEconomicaPrimaria": "Chofer",
+          "actividadEconomicaSecundaria": "Cocinero",
+          "salarioMensual": 1000000,
+          "selectBathRoomWithOptions": "red"
+        }
       }
     },
     "survey_definition": {
