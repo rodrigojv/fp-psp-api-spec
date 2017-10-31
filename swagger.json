@@ -1,407 +1,1843 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "1.0.0",
-    "title": "FP-PSP Server",
-    "description": "A sample API to manage surveys",
+    "description": "Api Documentation",
+    "version": "1.0",
+    "title": "Api Documentation",
+    "termsOfService": "urn:tos",
+    "contact": {},
     "license": {
-      "name": "MIT",
-      "url": "http://opensource.org/licenses/MIT"
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
     }
   },
-  "host": "fppsp.swagger.io",
-  "basePath": "/api",
-  "schemes": [
-    "http"
-  ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    { "name": "snapshot-controller", "description": "Snapshot Controller" },
+    { "name": "survey-controller", "description": "the survey API" },
+    { "name": "activity-controller", "description": "Activity Controller" },
+    { "name": "city-controller", "description": "City Controller" },
+    { "name": "family-controller", "description": "Family Controller" },
+    { "name": "country-controller", "description": "Country Controller" },
+    {
+      "name": "organization-controller",
+      "description": "Organization Controller"
+    },
+    { "name": "parameter-controller", "description": "Parameter Controller" },
+    { "name": "person-controller", "description": "Person Controller" },
+    { "name": "user-role-controller", "description": "User Role Controller" },
+    {
+      "name": "user-application-controller",
+      "description": "User Application Controller"
+    },
+    { "name": "user-controller", "description": "User Controller" },
+    {
+      "name": "application-controller",
+      "description": "Application Controller"
+    }
   ],
   "paths": {
-    "/survey/definition": {
+    "/api/v1/activities": {
+      "get": {
+        "tags": ["activity-controller"],
+        "summary": "getAllActivities",
+        "operationId": "getAllActivitiesUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/ActivityDTO" }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
       "post": {
-        "summary": "Add Survey Definiton",
-        "description": "Defines the SCHEMA of a new Survey",
-        "operationId": "addSurveyDefinition",
-        "produces": [
-          "application/json"
-        ],
+        "tags": ["activity-controller"],
+        "summary": "addActivity",
+        "operationId": "addActivityUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
         "parameters": [
           {
-            "name": "survey_definition",
             "in": "body",
-            "description": "The definition of the survey",
+            "name": "activityDTO",
+            "description": "activityDTO",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/new_survey_definition"
-            }
+            "schema": { "$ref": "#/definitions/ActivityDTO" }
           }
         ],
         "responses": {
-          "201": {
-            "description": "The successfully created survey definition resource",
-            "schema": {
-              "description": "The survey definition unique identifier",
-              "type": "object",
-              "example": {
-                "url": "http://localhost:3000/survey/12345/definition"
-              }
-            }
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ActivityDTO" }
           },
-          "default": {
-            "description": "unexpected error"
-          }
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
         }
       }
     },
-    "/survey/{survey_id}/definition": {
+    "/api/v1/activities/{activityId}": {
       "get": {
+        "tags": ["activity-controller"],
+        "summary": "getActivityById",
+        "operationId": "getActivityByIdUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "activityId",
+            "in": "path",
+            "description": "activityId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ActivityDTO" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/api/v1/applications": {
+      "get": {
+        "tags": ["application-controller"],
+        "summary": "getAllApplications",
+        "operationId": "getAllApplicationsUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/ApplicationDTO" }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "post": {
+        "tags": ["application-controller"],
+        "summary": "addApplication",
+        "operationId": "addApplicationUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "applicationDTO",
+            "description": "applicationDTO",
+            "required": true,
+            "schema": { "$ref": "#/definitions/ApplicationDTO" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ApplicationDTO" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/api/v1/applications/{applicationId}": {
+      "get": {
+        "tags": ["application-controller"],
+        "summary": "getApplicationById",
+        "operationId": "getApplicationByIdUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "applicationId",
+            "in": "path",
+            "description": "applicationId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ApplicationDTO" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "put": {
+        "tags": ["application-controller"],
+        "summary": "updateApplication",
+        "operationId": "updateApplicationUsingPUT",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "applicationId",
+            "in": "path",
+            "description": "applicationId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "applicationDTO",
+            "description": "applicationDTO",
+            "required": true,
+            "schema": { "$ref": "#/definitions/ApplicationDTO" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ApplicationDTO" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "delete": {
+        "tags": ["application-controller"],
+        "summary": "deleteApplication",
+        "operationId": "deleteApplicationUsingDELETE",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "applicationId",
+            "in": "path",
+            "description": "applicationId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "204": { "description": "No Content" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/api/v1/cities": {
+      "get": {
+        "tags": ["city-controller"],
+        "summary": "getAllCities",
+        "operationId": "getAllCitiesUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/CityDTO" }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "post": {
+        "tags": ["city-controller"],
+        "summary": "addCity",
+        "operationId": "addCityUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "cityDTO",
+            "description": "cityDTO",
+            "required": true,
+            "schema": { "$ref": "#/definitions/CityDTO" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/CityDTO" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/api/v1/cities/{cityId}": {
+      "get": {
+        "tags": ["city-controller"],
+        "summary": "getCityById",
+        "operationId": "getCityByIdUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "cityId",
+            "in": "path",
+            "description": "cityId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/CityDTO" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "put": {
+        "tags": ["city-controller"],
+        "summary": "updateCity",
+        "operationId": "updateCityUsingPUT",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "cityId",
+            "in": "path",
+            "description": "cityId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "cityDTO",
+            "description": "cityDTO",
+            "required": true,
+            "schema": { "$ref": "#/definitions/CityDTO" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/CityDTO" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "delete": {
+        "tags": ["city-controller"],
+        "summary": "deleteCity",
+        "operationId": "deleteCityUsingDELETE",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "cityId",
+            "in": "path",
+            "description": "cityId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "204": { "description": "No Content" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/api/v1/countries": {
+      "get": {
+        "tags": ["country-controller"],
+        "summary": "getAllCountries",
+        "operationId": "getAllCountriesUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/CountryDTO" }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/api/v1/countries/{countryId}": {
+      "get": {
+        "tags": ["country-controller"],
+        "summary": "getCountryById",
+        "operationId": "getCountryByIdUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "countryId",
+            "in": "path",
+            "description": "countryId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/CountryDTO" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/api/v1/families": {
+      "get": {
+        "tags": ["family-controller"],
+        "summary": "getAllFamilies",
+        "operationId": "getAllFamiliesUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/FamilyDTO" }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "post": {
+        "tags": ["family-controller"],
+        "summary": "addFamily",
+        "operationId": "addFamilyUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "familyDTO",
+            "description": "familyDTO",
+            "required": true,
+            "schema": { "$ref": "#/definitions/FamilyDTO" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/FamilyDTO" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/api/v1/families/{familyId}": {
+      "get": {
+        "tags": ["family-controller"],
+        "summary": "getFamilyById",
+        "operationId": "getFamilyByIdUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "familyId",
+            "in": "path",
+            "description": "familyId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/FamilyDTO" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "put": {
+        "tags": ["family-controller"],
+        "summary": "updateFamily",
+        "operationId": "updateFamilyUsingPUT",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "familyId",
+            "in": "path",
+            "description": "familyId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "familyDTO",
+            "description": "familyDTO",
+            "required": true,
+            "schema": { "$ref": "#/definitions/FamilyDTO" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/FamilyDTO" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "delete": {
+        "tags": ["family-controller"],
+        "summary": "deleteFamily",
+        "operationId": "deleteFamilyUsingDELETE",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "familyId",
+            "in": "path",
+            "description": "familyId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "204": { "description": "No Content" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/api/v1/organizations": {
+      "get": {
+        "tags": ["organization-controller"],
+        "summary": "getAllOrganizations",
+        "operationId": "getAllOrganizationsUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/OrganizationDTO" }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "post": {
+        "tags": ["organization-controller"],
+        "summary": "addOrganization",
+        "operationId": "addOrganizationUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "organizationDTO",
+            "description": "organizationDTO",
+            "required": true,
+            "schema": { "$ref": "#/definitions/OrganizationDTO" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/OrganizationDTO" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/api/v1/organizations/{organizationId}": {
+      "get": {
+        "tags": ["organization-controller"],
+        "summary": "getOrganizationById",
+        "operationId": "getOrganizationByIdUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "description": "organizationId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/OrganizationDTO" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "put": {
+        "tags": ["organization-controller"],
+        "summary": "updateOrganization",
+        "operationId": "updateOrganizationUsingPUT",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "description": "organizationId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "organizationDTO",
+            "description": "organizationDTO",
+            "required": true,
+            "schema": { "$ref": "#/definitions/OrganizationDTO" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/OrganizationDTO" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "delete": {
+        "tags": ["organization-controller"],
+        "summary": "deleteOrganization",
+        "operationId": "deleteOrganizationUsingDELETE",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "description": "organizationId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "204": { "description": "No Content" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/api/v1/parameters": {
+      "get": {
+        "tags": ["parameter-controller"],
+        "summary": "getAllParameters",
+        "operationId": "getAllParametersUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/ParameterDTO" }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "post": {
+        "tags": ["parameter-controller"],
+        "summary": "addParameter",
+        "operationId": "addParameterUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "parameterDTO",
+            "description": "parameterDTO",
+            "required": true,
+            "schema": { "$ref": "#/definitions/ParameterDTO" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ParameterDTO" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/api/v1/parameters/{parameterId}": {
+      "get": {
+        "tags": ["parameter-controller"],
+        "summary": "getParameterById",
+        "operationId": "getParameterByIdUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "parameterId",
+            "in": "path",
+            "description": "parameterId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ParameterDTO" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "put": {
+        "tags": ["parameter-controller"],
+        "summary": "updateParameter",
+        "operationId": "updateParameterUsingPUT",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "parameterId",
+            "in": "path",
+            "description": "parameterId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "parameterDTO",
+            "description": "parameterDTO",
+            "required": true,
+            "schema": { "$ref": "#/definitions/ParameterDTO" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ParameterDTO" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "delete": {
+        "tags": ["parameter-controller"],
+        "summary": "deleteParameter",
+        "operationId": "deleteParameterUsingDELETE",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "parameterId",
+            "in": "path",
+            "description": "parameterId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "204": { "description": "No Content" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/api/v1/people": {
+      "get": {
+        "tags": ["person-controller"],
+        "summary": "getAllPeople",
+        "operationId": "getAllPeopleUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/PersonDTO" }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "post": {
+        "tags": ["person-controller"],
+        "summary": "addPerson",
+        "operationId": "addPersonUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "personDTO",
+            "description": "personDTO",
+            "required": true,
+            "schema": { "$ref": "#/definitions/PersonDTO" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/PersonDTO" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/api/v1/people/{personId}": {
+      "get": {
+        "tags": ["person-controller"],
+        "summary": "getPersonById",
+        "operationId": "getPersonByIdUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "personId",
+            "in": "path",
+            "description": "personId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/PersonDTO" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "put": {
+        "tags": ["person-controller"],
+        "summary": "updatePerson",
+        "operationId": "updatePersonUsingPUT",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "personId",
+            "in": "path",
+            "description": "personId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "personDTO",
+            "description": "personDTO",
+            "required": true,
+            "schema": { "$ref": "#/definitions/PersonDTO" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/PersonDTO" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "delete": {
+        "tags": ["person-controller"],
+        "summary": "deletePerson",
+        "operationId": "deletePersonUsingDELETE",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "personId",
+            "in": "path",
+            "description": "personId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "204": { "description": "No Content" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/api/v1/snapshots": {
+      "get": {
+        "tags": ["snapshot-controller"],
+        "summary": "getSnapshots",
+        "operationId": "getSnapshotsUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["application/json;charset=UTF-8"],
+        "parameters": [
+          {
+            "name": "survey_id",
+            "in": "query",
+            "description": "survey_id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "family_id",
+            "in": "query",
+            "description": "family_id",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ResponseEntity" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "post": {
+        "tags": ["snapshot-controller"],
+        "summary": "addSnapshot",
+        "operationId": "addSnapshotUsingPOST",
+        "consumes": ["application/json;charset=UTF-8"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "snapshot",
+            "description": "the snapshot info",
+            "required": true,
+            "schema": { "$ref": "#/definitions/NewSnapshot" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ResponseEntity" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/api/v1/surveys": {
+      "get": {
+        "tags": ["survey-controller"],
+        "summary": "getDefinitions",
+        "operationId": "getDefinitionsUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ResponseEntity" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "post": {
+        "tags": ["survey-controller"],
+        "summary": "addSurveyDefinition",
+        "operationId": "addSurveyDefinitionUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "surveyDefinition",
+            "description": "surveyDefinition",
+            "required": true,
+            "schema": { "$ref": "#/definitions/NewSurveyDefinition" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ResponseEntity" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/api/v1/surveys/{survey_id}": {
+      "get": {
+        "tags": ["survey-controller"],
         "summary": "Get Survey Definition",
         "description": "Retrives the survey definition",
-        "operationId": "getSurveyDefinition",
-        "produces": [
-          "application/json"
-        ],
+        "operationId": "getSurveyDefinitionUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["application/json;charset=UTF-8"],
         "parameters": [
           {
             "name": "survey_id",
             "in": "path",
-            "required": true,
             "description": "The survey id",
-            "type": "integer"
+            "required": true,
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "responses": {
           "200": {
             "description": "The requested survey definition",
-            "schema": {
-              "$ref": "#/definitions/survey_definition"
-            }
-          }
+            "schema": { "$ref": "#/definitions/SurveyDefinition" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
         }
-      }
-    },
-    "/survey/{survey_id}/snapshot": {
-      "post": {
-        "summary": "Add Survey Snapshot",
-        "description": "Stores a new survey snapshot. A snapshot is a filled out survey",
-        "operationId": "addSurveySnapshot",
-        "produces": [
-          "application/json"
-        ],
+      },
+      "delete": {
+        "tags": ["survey-controller"],
+        "summary": "deleteSurvey",
+        "operationId": "deleteSurveyUsingDELETE",
+        "consumes": ["application/json"],
+        "produces": ["application/json;charset=UTF-8"],
         "parameters": [
           {
             "name": "survey_id",
             "in": "path",
-            "required": true,
             "description": "The survey id",
-            "type": "integer"
-          },
-          {
-            "name": "snapshot",
-            "in": "body",
             "required": true,
-            "description": "the snapshot info",
-            "schema": {
-              "$ref": "#/definitions/new_snapshot"
-            }
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "responses": {
-          "201": {
-            "description": "The successfully created snapshot resource",
-            "schema": {
-              "description": "The snapshot resource",
-              "type": "object",
-              "example": {
-                "url": "http://localhos:3000/snapshot/11223344556677"
-              }
-            }
-          }
+          "200": { "description": "OK", "schema": { "type": "object" } },
+          "401": { "description": "Unauthorized" },
+          "204": { "description": "No Content" },
+          "403": { "description": "Forbidden" }
         }
       }
     },
-    "/snapshot/{snapshot_id}": {
+    "/api/v1/user-applications": {
       "get": {
-        "summary": "Get Survey Snapshot",
-        "description": "Retrieves a survey snapshot",
-        "operationId": "getSurveySnapshot",
-        "produces": [
-          "application/json"
-        ],
+        "tags": ["user-application-controller"],
+        "summary": "getAllUserApplications",
+        "operationId": "getAllUserApplicationsUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/UserApplicationDTO" }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "post": {
+        "tags": ["user-application-controller"],
+        "summary": "addApplication",
+        "operationId": "addApplicationUsingPOST_1",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
         "parameters": [
           {
-            "name": "snapshot_id",
-            "in": "path",
+            "in": "body",
+            "name": "userApplicationDTO",
+            "description": "userApplicationDTO",
             "required": true,
-            "type": "integer"
+            "schema": { "$ref": "#/definitions/UserApplicationDTO" }
           }
         ],
         "responses": {
           "200": {
-            "description": "The requested snapshot",
-            "schema": {
-              "$ref": "#/definitions/snapshot"
-            }
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/UserApplicationDTO" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/api/v1/user-applications/{userApplicationId}": {
+      "get": {
+        "tags": ["user-application-controller"],
+        "summary": "getUserApplicationById",
+        "operationId": "getUserApplicationByIdUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "userApplicationId",
+            "in": "path",
+            "description": "userApplicationId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/UserApplicationDTO" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "put": {
+        "tags": ["user-application-controller"],
+        "summary": "updateUserApplication",
+        "operationId": "updateUserApplicationUsingPUT",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "userApplicationId",
+            "in": "path",
+            "description": "userApplicationId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "userApplicationDTO",
+            "description": "userApplicationDTO",
+            "required": true,
+            "schema": { "$ref": "#/definitions/UserApplicationDTO" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/UserApplicationDTO" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "delete": {
+        "tags": ["user-application-controller"],
+        "summary": "deleteUserApplication",
+        "operationId": "deleteUserApplicationUsingDELETE",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "userApplicationId",
+            "in": "path",
+            "description": "userApplicationId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "204": { "description": "No Content" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/api/v1/user-roles": {
+      "get": {
+        "tags": ["user-role-controller"],
+        "summary": "getAllUserRoles",
+        "operationId": "getAllUserRolesUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/UserRoleDTO" }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "post": {
+        "tags": ["user-role-controller"],
+        "summary": "addUserRole",
+        "operationId": "addUserRoleUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "userRoleDTO",
+            "description": "userRoleDTO",
+            "required": true,
+            "schema": { "$ref": "#/definitions/UserRoleDTO" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/UserRoleDTO" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/api/v1/user-roles/{userRoleId}": {
+      "get": {
+        "tags": ["user-role-controller"],
+        "summary": "getUserRoleById",
+        "operationId": "getUserRoleByIdUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "userRoleId",
+            "in": "path",
+            "description": "userRoleId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/UserRoleDTO" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "put": {
+        "tags": ["user-role-controller"],
+        "summary": "updateUserRole",
+        "operationId": "updateUserRoleUsingPUT",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "userRoleId",
+            "in": "path",
+            "description": "userRoleId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "userRoleDTO",
+            "description": "userRoleDTO",
+            "required": true,
+            "schema": { "$ref": "#/definitions/UserRoleDTO" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/UserRoleDTO" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "delete": {
+        "tags": ["user-role-controller"],
+        "summary": "deleteUserRole",
+        "operationId": "deleteUserRoleUsingDELETE",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "userRoleId",
+            "in": "path",
+            "description": "userRoleId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "204": { "description": "No Content" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "tags": ["user-controller"],
+        "summary": "getAllUsers",
+        "operationId": "getAllUsersUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/UserDTO" }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "post": {
+        "tags": ["user-controller"],
+        "summary": "addUser",
+        "operationId": "addUserUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "userDTO",
+            "description": "userDTO",
+            "required": true,
+            "schema": { "$ref": "#/definitions/UserDTO" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/UserDTO" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/api/v1/users/{userId}": {
+      "get": {
+        "tags": ["user-controller"],
+        "summary": "getUserById",
+        "operationId": "getUserByIdUsingGET",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/UserDTO" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "put": {
+        "tags": ["user-controller"],
+        "summary": "updateUser",
+        "operationId": "updateUserUsingPUT",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "userDTO",
+            "description": "userDTO",
+            "required": true,
+            "schema": { "$ref": "#/definitions/UserDTO" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/UserDTO" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "delete": {
+        "tags": ["user-controller"],
+        "summary": "deleteUser",
+        "operationId": "deleteUserUsingDELETE",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "204": { "description": "No Content" },
+          "403": { "description": "Forbidden" }
         }
       }
     }
   },
   "definitions": {
-    "survey_ui_schema": {
-      "description": "The UI SCHEMA definition of the survey. Holds info clients would use to render the survey",
-      "type": "object"
-    },
-    "property": {
-      "description": "Holds info representing the definition of the field",
+    "ApplicationDTO": {
       "type": "object",
       "properties": {
-        "type": {
-          "description": "The type of this field",
-          "type": "string",
-          "enum": [
-            "string",
-            "number",
-            "boolean"
-          ]
-        },
-        "title": {
-          "description": "The title of this field",
-          "type": "string"
-        }
+        "active": { "type": "boolean" },
+        "applicationId": { "type": "integer", "format": "int64" },
+        "city": { "$ref": "#/definitions/CityDTO" },
+        "code": { "type": "string" },
+        "country": { "$ref": "#/definitions/CountryDTO" },
+        "description": { "type": "string" },
+        "direct": { "type": "boolean" },
+        "hub": { "type": "boolean" },
+        "information": { "type": "string" },
+        "name": { "type": "string" },
+        "organization": { "type": "boolean" }
       }
     },
-    "survey_schema": {
-      "description": "The MODEL SCHEMA definition of the survey",
+    "UserRoleDTO": {
       "type": "object",
       "properties": {
-        "title": {
-          "description": "The title of this survey",
-          "type": "string"
-        },
-        "description": {
-          "description": "Text describing this survey",
-          "type": "string"
-        },
-        "required": {
-          "description": "List of properties are required to be filled",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "properties": {
-          "$ref": "#/definitions/property"
-        }
+        "role": { "type": "string", "enum": ["USER", "ADMIN"] },
+        "user": { "$ref": "#/definitions/UserDTO" },
+        "userRoleId": { "type": "integer", "format": "int64" }
       }
     },
-    "snapshot": {
+    "CountryDTO": {
       "type": "object",
       "properties": {
-        "socio_economic": {
+        "country": { "type": "string" },
+        "countryId": { "type": "integer", "format": "int64" }
+      }
+    },
+    "PersonDTO": {
+      "type": "object",
+      "properties": {
+        "activityPrimary": { "type": "string" },
+        "activitySecundary": { "type": "string" },
+        "city": { "$ref": "#/definitions/CityDTO" },
+        "country": { "$ref": "#/definitions/CountryDTO" },
+        "family": { "$ref": "#/definitions/FamilyDTO" },
+        "gender": { "type": "string", "enum": ["M", "F", "O"] },
+        "identificationNumber": { "type": "string" },
+        "identificationType": { "type": "string" },
+        "lastname": { "type": "string" },
+        "name": { "type": "string" },
+        "personId": { "type": "integer", "format": "int64" },
+        "personRole": { "type": "string" },
+        "phoneNumber": { "type": "string" }
+      }
+    },
+    "UserDTO": {
+      "type": "object",
+      "properties": {
+        "active": { "type": "boolean" },
+        "pass": { "type": "string" },
+        "userId": { "type": "integer", "format": "int64" },
+        "username": { "type": "string" }
+      }
+    },
+    "NewSnapshot": {
+      "type": "object",
+      "properties": {
+        "economic_survey_data": {
           "type": "object",
-          "description": "Key/value pairs representing the filled out 'socio economic' survey"
+          "description":
+            "Key/value pairs representing the filled out 'Socio Economics' survey",
+          "additionalProperties": { "type": "object" }
         },
-        "life_map": {
+        "indicator_survey_data": {
           "type": "object",
-          "description": "Key/value pairs representing the life map info"
+          "description":
+            "Key/value pairs representing the filled out 'Indicators' survey",
+          "additionalProperties": { "type": "object" }
         },
-        "family_id": {
-          "type": "integer",
-          "description": "The familiy id"
-        },
+        "survey_id": { "type": "integer", "format": "int64" }
+      }
+    },
+    "SurveyDefinition": {
+      "type": "object",
+      "required": ["survey_schema", "survey_ui_schema"],
+      "properties": {
         "created_at": {
           "type": "string",
-          "description": "[ISO 8601](https://es.wikipedia.org/wiki/ISO_8601) formatted creation date"
+          "description":
+            "[ISO 8601](https://es.wikipedia.org/wiki/ISO_8601) formatted creation date"
         },
-        "user_created": {
-          "type": "integer",
-          "description": "the id of the user that created this definition"
-        }
-      },
-      "example": {
-        "socio_economic": {
-          "actividadEconomicaPrimaria": "Chofer",
-          "actividadEconomicaSecundaria": "Cocinero",
-          "salarioMensual": 1000000
-        },
-        "life_map": {
-          "selectBathRoomWithOptions": {
-            "red": [
-              "2017/01/1",
-              "2017/01/02"
-            ],
-            "green": [
-              "2017/01/03",
-              "2017/01/04"
-            ]
-          }
-        },
-        "family_id": 123,
-        "created_at": "12/02/1993 15:22:33.999Z",
-        "user_created": 123
-      }
-    },
-    "new_snapshot": {
-      "type": "object",
-      "properties": {
-        "family_id": {
-          "type": "integer",
-          "description": "The familiy id"
-        },
-        "survey_data": {
-          "type": "object",
-          "description": "Key/value pairs representing the filled out survey"
-        }
-      },
-      "example": {
-        "family_id": 123,
-        "survey_data": {
-          "actividadEconomicaPrimaria": "Chofer",
-          "actividadEconomicaSecundaria": "Cocinero",
-          "salarioMensual": 1000000,
-          "selectBathRoomWithOptions": "red"
-        }
-      }
-    },
-    "survey_definition": {
-      "type": "object",
-      "required": [
-        "survey_schema",
-        "survey_ui_schema"
-      ],
-      "properties": {
-        "survey_schema": {
-          "$ref": "#/definitions/survey_schema"
-        },
-        "survey_ui_schema": {
-          "$ref": "#/definitions/survey_ui_schema"
-        },
-        "created_at": {
-          "type": "string",
-          "description": "[ISO 8601](https://es.wikipedia.org/wiki/ISO_8601) formatted creation date"
-        },
+        "description": { "type": "string" },
+        "id": { "type": "integer", "format": "int64" },
         "last_modified_at": {
           "type": "string",
-          "description": "[ISO 8601](https://es.wikipedia.org/wiki/ISO_8601) formatted modification date"
+          "description":
+            "[ISO 8601](https://es.wikipedia.org/wiki/ISO_8601) formatted modification date"
         },
+        "survey_schema": { "$ref": "#/definitions/SurveySchema" },
+        "survey_ui_schema": { "$ref": "#/definitions/SurveyUISchema" },
+        "title": { "type": "string" },
         "user_created": {
           "type": "integer",
+          "format": "int32",
           "description": "the id of the user that created this definition"
         }
-      },
-      "example": {
-        "survey_schema": {
-          "actividadEconomicaPrimaria": {
-            "type": "string,",
-            "title": "Ingrese su actividad econóimca primaria"
-          },
-          "actividadEconomicaSecundaria": {
-            "type": "string",
-            "title": "Ingrese su actividad económica secundaria"
-          },
-          "salarioMensual": {
-            "type": "integer",
-            "title": "Ingrese su salario mensual"
-          },
-          "selectBathRoomWithOptions": {
-            "title": "Usted cuenta con baño en su casa?",
-            "enum": [
-              "green",
-              "red",
-              "blue"
-            ]
-          }
-        },
-        "survey_ui_schema": {
-          "actividadEconomicaPrimaria": {
-            "ui.widget": "textarea"
-          },
-          "actividadEconomicaSecundaria": {
-            "ui.widget": "textarea"
-          },
-          "salarioMensual": {
-            "ui:widget": "range"
-          },
-          "selectBathRoomWithOptions": {
-            "ui:help": "Elija una foto que corresponda con su situación",
-            "ui:options": {
-              "backgroundColor": [
-                "red",
-                "blue",
-                "green"
-              ]
-            }
-          }
-        },
-        "created_at": "12/02/1993 15:22:33.999Z",
-        "last_modified_at": "12/02/1993 15:22:33.999Z",
-        "user_created": 123
       }
     },
-    "new_survey_definition": {
+    "ActivityDTO": {
       "type": "object",
-      "required": [
-        "survey_schema",
-        "survey_ui_schema"
-      ],
       "properties": {
-        "survey_schema": {
-          "$ref": "#/definitions/survey_schema"
+        "activityId": { "type": "integer", "format": "int64" },
+        "activityType": { "type": "string" },
+        "applicationId": { "type": "integer", "format": "int64" },
+        "createAt": { "type": "string" },
+        "description": { "type": "string" },
+        "organizationId": { "type": "integer", "format": "int64" },
+        "userId": { "type": "integer", "format": "int64" }
+      }
+    },
+    "OrganizationDTO": {
+      "type": "object",
+      "properties": {
+        "active": { "type": "boolean" },
+        "application": { "$ref": "#/definitions/ApplicationDTO" },
+        "code": { "type": "integer", "format": "int32" },
+        "country": { "$ref": "#/definitions/CountryDTO" },
+        "description": { "type": "string" },
+        "id": { "type": "integer", "format": "int64" },
+        "information": { "type": "string" },
+        "name": { "type": "string" }
+      }
+    },
+    "ParameterDTO": {
+      "type": "object",
+      "properties": {
+        "description": { "type": "string" },
+        "keyParameter": { "type": "string" },
+        "parameterId": { "type": "integer", "format": "int64" },
+        "typeParameter": { "type": "string" }
+      }
+    },
+    "ResponseEntity": {
+      "type": "object",
+      "properties": {
+        "body": { "type": "object" },
+        "statusCode": {
+          "type": "string",
+          "enum": [
+            "100",
+            "101",
+            "102",
+            "103",
+            "200",
+            "201",
+            "202",
+            "203",
+            "204",
+            "205",
+            "206",
+            "207",
+            "208",
+            "226",
+            "300",
+            "301",
+            "302",
+            "303",
+            "304",
+            "305",
+            "307",
+            "308",
+            "400",
+            "401",
+            "402",
+            "403",
+            "404",
+            "405",
+            "406",
+            "407",
+            "408",
+            "409",
+            "410",
+            "411",
+            "412",
+            "413",
+            "414",
+            "415",
+            "416",
+            "417",
+            "418",
+            "419",
+            "420",
+            "421",
+            "422",
+            "423",
+            "424",
+            "426",
+            "428",
+            "429",
+            "431",
+            "451",
+            "500",
+            "501",
+            "502",
+            "503",
+            "504",
+            "505",
+            "506",
+            "507",
+            "508",
+            "509",
+            "510",
+            "511"
+          ]
         },
-        "survey_ui_schema": {
+        "statusCodeValue": { "type": "integer", "format": "int32" }
+      }
+    },
+    "UserApplicationDTO": {
+      "type": "object",
+      "properties": {
+        "application": { "$ref": "#/definitions/ApplicationDTO" },
+        "organization": { "$ref": "#/definitions/OrganizationDTO" },
+        "user": { "$ref": "#/definitions/UserDTO" },
+        "userApplicationId": { "type": "integer", "format": "int64" }
+      }
+    },
+    "SurveySchema": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Text describing this survey"
+        },
+        "properties": {
           "type": "object",
-          "description": "The UI SCHEMA definition of the survey, to be used on render"
+          "additionalProperties": { "$ref": "#/definitions/Property" }
+        },
+        "required": {
+          "type": "array",
+          "description": "List of properties are required to be filled",
+          "items": { "type": "string" }
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of this survey"
+        },
+        "type": { "type": "string" }
+      },
+      "description": "The MODEL SCHEMA definition of the survey"
+    },
+    "SurveyUISchema": {
+      "type": "object",
+      "properties": {
+        "properties": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/definitions/Property" }
+        },
+        "ui:group:economics": {
+          "type": "array",
+          "description":
+            "Specifies which fields should be grouped as socio-economics in the UI",
+          "items": { "type": "string" }
+        },
+        "ui:group:indicators": {
+          "type": "array",
+          "description":
+            "Specifies which fields should be grouped as indicators in the UI",
+          "items": { "type": "string" }
+        },
+        "ui:order": {
+          "type": "array",
+          "description":
+            "Specifies the order in which the fields should be rendererd in the UI",
+          "items": { "type": "string" }
         }
       },
-      "example": {
-        "survey_schema": {
-          "actividadEconomicaPrimaria": {
-            "type": "string,",
-            "title": "Ingrese su actividad econóimca primaria"
-          },
-          "actividadEconomicaSecundaria": {
-            "type": "string",
-            "title": "Ingrese su actividad económica secundaria"
-          },
-          "salarioMensual": {
-            "type": "integer",
-            "title": "Ingrese su salario mensual"
-          },
-          "selectBathRoomWithOptions": {
-            "title": "Usted cuenta con baño en su casa?",
-            "enum": [
-              "green",
-              "red",
-              "blue"
-            ]
-          }
+      "description":
+        "The UI SCHEMA definition of the survey. Holds info clients would use to render the survey"
+    },
+    "CityDTO": {
+      "type": "object",
+      "properties": {
+        "city": { "type": "string" },
+        "cityId": { "type": "integer", "format": "int64" }
+      }
+    },
+    "FamilyDTO": {
+      "type": "object",
+      "properties": {
+        "application": { "$ref": "#/definitions/ApplicationDTO" },
+        "applicationId": { "$ref": "#/definitions/ApplicationDTO" },
+        "city": { "$ref": "#/definitions/CityDTO" },
+        "country": { "$ref": "#/definitions/CountryDTO" },
+        "familyId": { "type": "integer", "format": "int64" },
+        "locationPositionGps": { "type": "string" },
+        "locationType": { "type": "string" },
+        "name": { "type": "string" },
+        "organization": { "$ref": "#/definitions/OrganizationDTO" },
+        "organizationId": { "$ref": "#/definitions/OrganizationDTO" },
+        "person": { "$ref": "#/definitions/PersonDTO" }
+      }
+    },
+    "Property": {
+      "type": "object",
+      "properties": {
+        "enum": { "type": "array", "items": { "type": "object" } },
+        "enumNames": { "type": "array", "items": { "type": "object" } },
+        "format": { "type": "string", "enum": ["data-url"] },
+        "title": {
+          "type": "object",
+          "description": "The title of this field",
+          "additionalProperties": { "type": "string" }
         },
-        "survey_ui_schema": {
-          "actividadEconomicaPrimaria": {
-            "ui.widget": "textarea"
-          },
-          "actividadEconomicaSecundaria": {
-            "ui.widget": "textarea"
-          },
-          "salarioMensual": {
-            "ui:widget": "range"
-          },
-          "selectBathRoomWithOptions": {
-            "ui:help": "Elija una foto que corresponda con su situación",
-            "ui:options": {
-              "backgroundColor": [
-                "red",
-                "blue",
-                "green"
-              ]
-            }
-          }
+        "type": {
+          "type": "string",
+          "description": "The type of this field",
+          "enum": ["string", "number", "boolean", "object", "integer"]
         }
+      },
+      "description": "Holds info representing the definition of the field"
+    },
+    "NewSurveyDefinition": {
+      "type": "object",
+      "required": ["survey_schema", "survey_ui_schema"],
+      "properties": {
+        "description": { "type": "string" },
+        "survey_schema": { "$ref": "#/definitions/SurveySchema" },
+        "survey_ui_schema": {
+          "description":
+            "The UI SCHEMA definition of the survey, to be used on render",
+          "$ref": "#/definitions/SurveyUISchema"
+        },
+        "title": { "type": "string" }
       }
     }
   }

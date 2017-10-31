@@ -1,0 +1,408 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "FP-PSP Server",
+    "description": "A sample API to manage surveys",
+    "license": {
+      "name": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "fppsp.swagger.io",
+  "basePath": "/api",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/survey/definition": {
+      "post": {
+        "summary": "Add Survey Definiton",
+        "description": "Defines the SCHEMA of a new Survey",
+        "operationId": "addSurveyDefinition",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "survey_definition",
+            "in": "body",
+            "description": "The definition of the survey",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/new_survey_definition"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The successfully created survey definition resource",
+            "schema": {
+              "description": "The survey definition unique identifier",
+              "type": "object",
+              "example": {
+                "url": "http://localhost:3000/survey/12345/definition"
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error"
+          }
+        }
+      }
+    },
+    "/survey/{survey_id}/definition": {
+      "get": {
+        "summary": "Get Survey Definition",
+        "description": "Retrives the survey definition",
+        "operationId": "getSurveyDefinition",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "survey_id",
+            "in": "path",
+            "required": true,
+            "description": "The survey id",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested survey definition",
+            "schema": {
+              "$ref": "#/definitions/survey_definition"
+            }
+          }
+        }
+      }
+    },
+    "/survey/{survey_id}/snapshot": {
+      "post": {
+        "summary": "Add Survey Snapshot",
+        "description": "Stores a new survey snapshot. A snapshot is a filled out survey",
+        "operationId": "addSurveySnapshot",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "survey_id",
+            "in": "path",
+            "required": true,
+            "description": "The survey id",
+            "type": "integer"
+          },
+          {
+            "name": "snapshot",
+            "in": "body",
+            "required": true,
+            "description": "the snapshot info",
+            "schema": {
+              "$ref": "#/definitions/new_snapshot"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The successfully created snapshot resource",
+            "schema": {
+              "description": "The snapshot resource",
+              "type": "object",
+              "example": {
+                "url": "http://localhos:3000/snapshot/11223344556677"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/snapshot/{snapshot_id}": {
+      "get": {
+        "summary": "Get Survey Snapshot",
+        "description": "Retrieves a survey snapshot",
+        "operationId": "getSurveySnapshot",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "snapshot_id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested snapshot",
+            "schema": {
+              "$ref": "#/definitions/snapshot"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "survey_ui_schema": {
+      "description": "The UI SCHEMA definition of the survey. Holds info clients would use to render the survey",
+      "type": "object"
+    },
+    "property": {
+      "description": "Holds info representing the definition of the field",
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "The type of this field",
+          "type": "string",
+          "enum": [
+            "string",
+            "number",
+            "boolean"
+          ]
+        },
+        "title": {
+          "description": "The title of this field",
+          "type": "string"
+        }
+      }
+    },
+    "survey_schema": {
+      "description": "The MODEL SCHEMA definition of the survey",
+      "type": "object",
+      "properties": {
+        "title": {
+          "description": "The title of this survey",
+          "type": "string"
+        },
+        "description": {
+          "description": "Text describing this survey",
+          "type": "string"
+        },
+        "required": {
+          "description": "List of properties are required to be filled",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "properties": {
+          "$ref": "#/definitions/property"
+        }
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "properties": {
+        "socio_economic": {
+          "type": "object",
+          "description": "Key/value pairs representing the filled out 'socio economic' survey"
+        },
+        "life_map": {
+          "type": "object",
+          "description": "Key/value pairs representing the life map info"
+        },
+        "family_id": {
+          "type": "integer",
+          "description": "The familiy id"
+        },
+        "created_at": {
+          "type": "string",
+          "description": "[ISO 8601](https://es.wikipedia.org/wiki/ISO_8601) formatted creation date"
+        },
+        "user_created": {
+          "type": "integer",
+          "description": "the id of the user that created this definition"
+        }
+      },
+      "example": {
+        "socio_economic": {
+          "actividadEconomicaPrimaria": "Chofer",
+          "actividadEconomicaSecundaria": "Cocinero",
+          "salarioMensual": 1000000
+        },
+        "life_map": {
+          "selectBathRoomWithOptions": {
+            "red": [
+              "2017/01/1",
+              "2017/01/02"
+            ],
+            "green": [
+              "2017/01/03",
+              "2017/01/04"
+            ]
+          }
+        },
+        "family_id": 123,
+        "created_at": "12/02/1993 15:22:33.999Z",
+        "user_created": 123
+      }
+    },
+    "new_snapshot": {
+      "type": "object",
+      "properties": {
+        "family_id": {
+          "type": "integer",
+          "description": "The familiy id"
+        },
+        "survey_data": {
+          "type": "object",
+          "description": "Key/value pairs representing the filled out survey"
+        }
+      },
+      "example": {
+        "family_id": 123,
+        "survey_data": {
+          "actividadEconomicaPrimaria": "Chofer",
+          "actividadEconomicaSecundaria": "Cocinero",
+          "salarioMensual": 1000000,
+          "selectBathRoomWithOptions": "red"
+        }
+      }
+    },
+    "survey_definition": {
+      "type": "object",
+      "required": [
+        "survey_schema",
+        "survey_ui_schema"
+      ],
+      "properties": {
+        "survey_schema": {
+          "$ref": "#/definitions/survey_schema"
+        },
+        "survey_ui_schema": {
+          "$ref": "#/definitions/survey_ui_schema"
+        },
+        "created_at": {
+          "type": "string",
+          "description": "[ISO 8601](https://es.wikipedia.org/wiki/ISO_8601) formatted creation date"
+        },
+        "last_modified_at": {
+          "type": "string",
+          "description": "[ISO 8601](https://es.wikipedia.org/wiki/ISO_8601) formatted modification date"
+        },
+        "user_created": {
+          "type": "integer",
+          "description": "the id of the user that created this definition"
+        }
+      },
+      "example": {
+        "survey_schema": {
+          "actividadEconomicaPrimaria": {
+            "type": "string,",
+            "title": "Ingrese su actividad econóimca primaria"
+          },
+          "actividadEconomicaSecundaria": {
+            "type": "string",
+            "title": "Ingrese su actividad económica secundaria"
+          },
+          "salarioMensual": {
+            "type": "integer",
+            "title": "Ingrese su salario mensual"
+          },
+          "selectBathRoomWithOptions": {
+            "title": "Usted cuenta con baño en su casa?",
+            "enum": [
+              "green",
+              "red",
+              "blue"
+            ]
+          }
+        },
+        "survey_ui_schema": {
+          "actividadEconomicaPrimaria": {
+            "ui.widget": "textarea"
+          },
+          "actividadEconomicaSecundaria": {
+            "ui.widget": "textarea"
+          },
+          "salarioMensual": {
+            "ui:widget": "range"
+          },
+          "selectBathRoomWithOptions": {
+            "ui:help": "Elija una foto que corresponda con su situación",
+            "ui:options": {
+              "backgroundColor": [
+                "red",
+                "blue",
+                "green"
+              ]
+            }
+          }
+        },
+        "created_at": "12/02/1993 15:22:33.999Z",
+        "last_modified_at": "12/02/1993 15:22:33.999Z",
+        "user_created": 123
+      }
+    },
+    "new_survey_definition": {
+      "type": "object",
+      "required": [
+        "survey_schema",
+        "survey_ui_schema"
+      ],
+      "properties": {
+        "survey_schema": {
+          "$ref": "#/definitions/survey_schema"
+        },
+        "survey_ui_schema": {
+          "type": "object",
+          "description": "The UI SCHEMA definition of the survey, to be used on render"
+        }
+      },
+      "example": {
+        "survey_schema": {
+          "actividadEconomicaPrimaria": {
+            "type": "string,",
+            "title": "Ingrese su actividad econóimca primaria"
+          },
+          "actividadEconomicaSecundaria": {
+            "type": "string",
+            "title": "Ingrese su actividad económica secundaria"
+          },
+          "salarioMensual": {
+            "type": "integer",
+            "title": "Ingrese su salario mensual"
+          },
+          "selectBathRoomWithOptions": {
+            "title": "Usted cuenta con baño en su casa?",
+            "enum": [
+              "green",
+              "red",
+              "blue"
+            ]
+          }
+        },
+        "survey_ui_schema": {
+          "actividadEconomicaPrimaria": {
+            "ui.widget": "textarea"
+          },
+          "actividadEconomicaSecundaria": {
+            "ui.widget": "textarea"
+          },
+          "salarioMensual": {
+            "ui:widget": "range"
+          },
+          "selectBathRoomWithOptions": {
+            "ui:help": "Elija una foto que corresponda con su situación",
+            "ui:options": {
+              "backgroundColor": [
+                "red",
+                "blue",
+                "green"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
